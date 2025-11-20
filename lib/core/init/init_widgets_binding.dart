@@ -1,0 +1,28 @@
+import 'package:balmoranews/logic/use_case/preload_asset_images.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
+Future<WidgetsBinding> initWidgetsBinding() async {
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  await const PreloadImages().execute();
+  widgetsBinding.preserveSplashScreen();
+
+  return widgetsBinding;
+}
+
+bool _splashScreenStopped = false;
+
+extension NativeSplashPreservation on WidgetsBinding {
+  void preserveSplashScreen() {
+    FlutterNativeSplash.preserve(widgetsBinding: this);
+  }
+
+  void removeSplashScreen() {
+    /// native splash can be removed only once
+    if (_splashScreenStopped) {
+      return;
+    }
+    FlutterNativeSplash.remove();
+    _splashScreenStopped = true;
+  }
+}
