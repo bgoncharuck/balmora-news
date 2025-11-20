@@ -25,6 +25,8 @@ GoRouter declarativeRouter() => GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
+        /// context-based locator of screen controller
+        /// new screen -> new controller
         return WelcomeScreenLocator(
           controller: WelcomeScreenController(WelcomeScreenParams()),
           child: const ResponsiveScreen(

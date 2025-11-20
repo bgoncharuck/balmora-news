@@ -32,7 +32,7 @@ class _NewsListMobileAlbumScreenState extends State<NewsListMobileAlbumScreen> {
           Center(
             child: Text(
               'Mobile Album News List.',
-              style: kanit38w500.copyWith(color: primary),
+              style: kanit42w500.copyWith(color: primary),
               textAlign: TextAlign.center,
             ),
           ),

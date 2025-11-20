@@ -66,6 +66,7 @@ class ResponsiveScreen extends StatelessWidget {
           }
         }
 
+        /// find any related issue quickly during debug or in logs
         throw Exception(
           'lib/core/interface/screen_module/responsive_screen.dart: Unsupported layout',
         );

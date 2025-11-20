@@ -1,4 +1,5 @@
 # balmoranews
+WIP, 2 days work
 
 It could be done with the native flutter completely, but we have a requirement:
 ```YAML

@@ -10,6 +10,9 @@ Future<WidgetsBinding> initWidgetsBinding() async {
   return widgetsBinding;
 }
 
+/// file-private field + extension,
+/// a variation of Open-Closed principle to expand functionality
+/// without changing a class
 bool _splashScreenStopped = false;
 
 extension NativeSplashPreservation on WidgetsBinding {
