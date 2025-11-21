@@ -33,7 +33,7 @@ class _NewsListMobilePortraitScreenState
           Center(
             child: Text(
               'Mobile Portrait News List.',
-              style: kanit38w500.copyWith(color: primary),
+              style: kanit42w500.copyWith(color: primary),
               textAlign: TextAlign.center,
             ),
           ),

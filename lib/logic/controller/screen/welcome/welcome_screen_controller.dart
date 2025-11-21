@@ -1,6 +1,7 @@
 import 'package:balmoranews/core/di.dart';
 import 'package:balmoranews/core/interface/screen_module/screen_controller.dart';
 import 'package:balmoranews/core/interface/screen_module/screen_locator.dart';
+import 'package:balmoranews/logic/use_case/launch_url.dart';
 import 'package:flutter/widgets.dart';
 
 class WelcomeScreenParams extends ScreenControllerParams {}
@@ -12,7 +13,21 @@ class WelcomeScreenController extends ScreenController<WelcomeScreenParams> {
     router.go('/news');
   }
 
-  String get privacyPolicyUrl => env.privacyPolicyUrl;
+  Future<void> launchPrivacyPolicy() async {
+    await const LaunchUrl().execute(
+      params: env.privacyPolicyUrl,
+    );
+  }
+
+  Future<void> launchTermsOfUse() async {
+    await const LaunchUrl().execute(
+      params: env.termsOfUseUrl,
+    );
+  }
+
+  void acceptAndContinue() {
+    router.go('/news');
+  }
 }
 
 class WelcomeScreenLocator extends ScreenLocator<WelcomeScreenController> {

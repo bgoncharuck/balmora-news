@@ -43,6 +43,8 @@ Future<List<int>> _readKey(
       await logger.exception(e, t);
 
       /// Delete HiveBox storage if key is lost
+      /// Yes, intended and aware, a clean app start.
+      /// Also, protection against reverse-engineering.
       await Hive.deleteBoxFromDisk(hiveBoxNameOnError);
       localPrefKey = await _generateNewKey(encryptionKey);
     }
