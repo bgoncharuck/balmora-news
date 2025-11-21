@@ -25,7 +25,13 @@ class WelcomeScreenController extends ScreenController<WelcomeScreenParams> {
     );
   }
 
-  void acceptAndContinue() {
+  Future<void> acceptAndContinue() async {
+    /// technically, user may accept privacy policy but not terms
+    /// and we must have the specific UI design for this situation
+    /// so, for the SRP sake, they are separated
+    await localPref.setAcceptanceOfPrivacyPolicy(value: true);
+    await localPref.setAcceptanceOfTerms(value: true);
+
     router.go('/news');
   }
 }

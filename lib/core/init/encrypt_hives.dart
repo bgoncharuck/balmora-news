@@ -1,19 +1,30 @@
 import 'dart:convert';
 import 'package:balmoranews/core/di.dart';
+import 'package:balmoranews/core/interface/hive_module.dart';
 import 'package:balmoranews/data/service/di.dart';
-import 'package:balmoranews/data/service/local_pref/local_pref.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 Future<void> encryptHives() async {
-  final localPrefEncryptionKey = env.localPrefEncryptionKey;
+  final hiveModules = <EncryptedHiveModule>[
+    EncryptedHiveModule(
+      module: localPref,
+      publicEncryptionKey: env.localPrefEncryptionKey,
+    ),
+    EncryptedHiveModule(
+      module: newsConfigStorage,
+      publicEncryptionKey: env.newsConfigEncryptionKey,
+    ),
+  ];
 
-  final localPrefKey = await _readKey(
-    localPrefEncryptionKey,
-    hiveBoxNameOnError: localPrefHiveBoxName,
-  );
+  for (final encrypted in hiveModules) {
+    final localPrefKey = await _readKey(
+      encrypted.publicEncryptionKey,
+      hiveBoxNameOnError: encrypted.module.hiveBoxName,
+    );
 
-  await localPref.init(localPrefKey);
+    await encrypted.module.init(localPrefKey);
+  }
 }
 
 Future<List<int>> _generateNewKey(String encryptionKey) async {

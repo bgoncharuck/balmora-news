@@ -1,3 +1,4 @@
+import 'package:balmoranews/data/service/di.dart';
 import 'package:balmoranews/logic/use_case/preload_asset_images.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -10,10 +11,12 @@ Future<WidgetsBinding> initWidgetsBinding() async {
   return widgetsBinding;
 }
 
-/// file-private field + extension,
-/// a variation of Open-Closed principle to expand functionality
-/// without changing a class
-bool _splashScreenStopped = false;
+class SplashScreenStopped {
+  /// file-private field + extension,
+  /// a variation of Open-Closed principle to expand functionality
+  /// without changing a class
+  var _splashScreenStopped = false;
+}
 
 extension NativeSplashPreservation on WidgetsBinding {
   void preserveSplashScreen() {
@@ -22,10 +25,10 @@ extension NativeSplashPreservation on WidgetsBinding {
 
   void removeSplashScreen() {
     /// native splash can be removed only once
-    if (_splashScreenStopped) {
+    if (di.get<SplashScreenStopped>()._splashScreenStopped) {
       return;
     }
     FlutterNativeSplash.remove();
-    _splashScreenStopped = true;
+    di.get<SplashScreenStopped>()._splashScreenStopped = true;
   }
 }
