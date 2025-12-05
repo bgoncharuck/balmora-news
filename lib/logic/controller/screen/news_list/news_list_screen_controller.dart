@@ -1,14 +1,40 @@
-import 'package:balmoranews/core/di.dart';
 import 'package:balmoranews/core/interface/screen_module/screen_controller.dart';
 import 'package:balmoranews/core/interface/screen_module/screen_locator.dart';
+import 'package:balmoranews/data/entity/news_api/news_article.dart';
+import 'package:balmoranews/logic/cubit/news/cubit.dart';
+import 'package:balmoranews/logic/cubit/news/state/feed_item.dart';
+import 'package:balmoranews/logic/cubit/news/state/state.dart';
 import 'package:flutter/widgets.dart';
 
-class NewsListScreenParams extends ScreenControllerParams {}
+class NewsListScreenParams extends ScreenControllerParams {
+  NewsListScreenParams({required this.cubit});
+  final NewsCubit cubit;
+}
 
 class NewsListScreenController extends ScreenController<NewsListScreenParams> {
   NewsListScreenController(super.params);
+  NewsCubit get cubit => params.cubit;
 
-  String get privacyPolicyUrl => env.privacyPolicyUrl;
+  List<NewsFeedItem> get items => [
+    ...cubit.state.newItems,
+    ...cubit.state.initialItems,
+  ];
+
+  Future<void> retry() async {
+    if (cubit.state.errorType == NewsErrorType.firstLoadException) {
+      await cubit.onEmptyInitialList();
+    }
+  }
+
+  Future<void> goToArticleDetails(NewsArticle article) async {}
+
+  Future<void> update() async {
+    await cubit.update();
+  }
+
+  Future<void> nextPage() async {
+    await cubit.nextPage();
+  }
 }
 
 class NewsListScreenLocator extends ScreenLocator<NewsListScreenController> {

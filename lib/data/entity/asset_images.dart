@@ -9,17 +9,17 @@ const backgroundPortraitAssetImage = AssetImage(
 const backgroundBalmoraWelcomeAssetImage = AssetImage(
   'assets/images/balmora_welcome_background.jpg',
 );
-const backgroundBalmoraNewsAssetImage = AssetImage(
-  'assets/images/balmora_news_background.jpg',
+const backgroundBalmoraPortraitAssetImage = AssetImage(
+  'assets/images/balmora_background_portrait.jpg',
 );
-const backgroundBalmoraAssetImage = AssetImage(
-  'assets/images/balmora_background.jpg',
+const backgroundBalmoraAlbumAssetImage = AssetImage(
+  'assets/images/balmora_background_album.jpg',
 );
 
 const assetImagesToLoad = <AssetImage>[
   backgroundAlbumAssetImage,
   backgroundPortraitAssetImage,
   backgroundBalmoraWelcomeAssetImage,
-  backgroundBalmoraNewsAssetImage,
-  backgroundBalmoraAssetImage,
+  backgroundBalmoraPortraitAssetImage,
+  backgroundBalmoraAlbumAssetImage,
 ];

@@ -18,6 +18,12 @@ class PluginFlutterDotEnv extends EnvironmentStrategy {
       envNameLocalPrefEncryptionKey,
       dotenv.env[envNameLocalPrefEncryptionKey],
     );
+    _validateVar(envNewsApiUrl, dotenv.env[envNewsApiUrl]);
+    _validateVar(envNewsApiKey, dotenv.env[envNewsApiKey]);
+    _validateVar(
+      envNewsConfigEncryptionKey,
+      dotenv.env[envNewsConfigEncryptionKey],
+    );
   }
 
   @override
@@ -27,4 +33,10 @@ class PluginFlutterDotEnv extends EnvironmentStrategy {
   @override
   String get localPrefEncryptionKey =>
       dotenv.env[envNameLocalPrefEncryptionKey]!;
+  @override
+  String get newsApiUrl => dotenv.env[envNewsApiUrl]!;
+  @override
+  String get newsApiKey => dotenv.env[envNewsApiKey]!;
+  @override
+  String get newsConfigEncryptionKey => dotenv.env[envNewsConfigEncryptionKey]!;
 }
