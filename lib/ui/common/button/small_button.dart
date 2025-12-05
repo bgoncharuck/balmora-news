@@ -1,7 +1,7 @@
 import 'package:balmoranews/ui/common/export.dart';
 
-class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({
+class SmallButton extends StatelessWidget {
+  const SmallButton({
     required this.text,
     required this.onPressed,
     this.inactive = false,
@@ -16,7 +16,6 @@ class PrimaryButton extends StatelessWidget {
     return GestureDetector(
       onTap: inactive ? null : onPressed,
       child: AdaptiveSizeDecorated(
-        width: 300,
         height: 54,
         decoration: BoxDecoration(
           gradient: inactive
@@ -26,11 +25,14 @@ class PrimaryButton extends StatelessWidget {
           // ignore: avoid_redundant_argument_values
           border: Border.all(color: buttonBorderColor, width: 1),
         ),
-        child: Center(
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: poppins20w600.copyWith(color: primary),
+        child: Padding(
+          padding: adaptiveSymmetricInset(horizontal: 8),
+          child: Center(
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: poppins20w600.copyWith(color: primary),
+            ),
           ),
         ),
       ),

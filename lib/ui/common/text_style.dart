@@ -25,6 +25,14 @@ TextStyle get poppins28w500 => adaptiveTextStyle(
   ),
 );
 
+TextStyle get poppins22w600 => adaptiveTextStyle(
+  const TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'Poppins',
+  ),
+);
+
 TextStyle get poppins20w600 => adaptiveTextStyle(
   const TextStyle(
     fontSize: 20,
@@ -61,6 +69,22 @@ TextStyle get poppins16w500 => adaptiveTextStyle(
   const TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
+    fontFamily: 'Poppins',
+  ),
+);
+
+TextStyle get poppins16w400 => adaptiveTextStyle(
+  const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Poppins',
+  ),
+);
+
+TextStyle get poppins15w400 => adaptiveTextStyle(
+  const TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
     fontFamily: 'Poppins',
   ),
 );

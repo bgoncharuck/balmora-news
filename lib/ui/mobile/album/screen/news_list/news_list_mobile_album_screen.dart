@@ -10,7 +10,6 @@ import 'package:balmoranews/ui/common/export.dart';
 import 'package:balmoranews/ui/common/news/feed_item.dart';
 import 'package:balmoranews/ui/mobile/album/mobile_album_action_page.dart';
 import 'package:balmoranews/ui/mobile/album/mobile_album_content_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -97,7 +96,7 @@ class _NewsListMobileAlbumScreenState extends State<NewsListMobileAlbumScreen> {
                 return MobileAlbumContentPage(
                   child: CustomScrollView(
                     controller: _scroll,
-                    physics: const PageScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     slivers: [
                       if (_isTopActivity)
                         SliverToBoxAdapter(
@@ -119,6 +118,7 @@ class _NewsListMobileAlbumScreenState extends State<NewsListMobileAlbumScreen> {
                           final feedItem = feed[index];
                           if (feedItem.type == NewsFeedItemType.article) {
                             return GestureDetector(
+                              behavior: HitTestBehavior.opaque,
                               onTap: () =>
                                   sctl.goToArticleDetails(feedItem.article!),
                               child: NewsFeedItemArticle(

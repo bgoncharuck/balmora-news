@@ -3,7 +3,6 @@ import 'package:balmoranews/core/init/init_widgets_binding.dart';
 import 'package:balmoranews/logic/controller/screen/welcome/welcome_screen_controller.dart';
 import 'package:balmoranews/ui/common/export.dart';
 import 'package:balmoranews/ui/mobile/album/mobile_album_action_page.dart';
-import 'package:flutter/cupertino.dart';
 
 class WelcomeMobileAlbumScreen extends StatefulWidget {
   const WelcomeMobileAlbumScreen({super.key});

@@ -1,3 +1,4 @@
+import 'package:balmoranews/core/di.dart';
 import 'package:balmoranews/core/interface/screen_module/screen_controller.dart';
 import 'package:balmoranews/core/interface/screen_module/screen_locator.dart';
 import 'package:balmoranews/data/entity/news_api/news_article.dart';
@@ -26,7 +27,12 @@ class NewsListScreenController extends ScreenController<NewsListScreenParams> {
     }
   }
 
-  Future<void> goToArticleDetails(NewsArticle article) async {}
+  void goToArticleDetails(NewsArticle article) {
+    final sourceName = article.source.name;
+    final title = article.title;
+
+    router.go('/news/details/$sourceName/$title');
+  }
 
   Future<void> update() async {
     await cubit.update();

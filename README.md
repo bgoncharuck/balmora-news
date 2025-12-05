@@ -31,6 +31,18 @@ As it's not a real project, the .env and .build_template are not .gitignored
 - Initial load and retry
 - Internet connection observer
 - get new news OR get more older ones on scroll events
-- hydrated bloc (offline cache)
+- hydrated bloc: mobile state offline cache and FlutterWeb bloc cache
 - FPS ~59
 - ability to change config of news request (NewsConfig)
+
+![Portrait](images/news_list_screen_portrait.png)
+![Album](images/news_list_screen_album.png)
+
+## News Details
+
+Shows all news details available, actions:
+- open source link
+- copy source link
+
+![Portrait](images/news_details_screen_portrait.png)
+![Album](images/news_details_screen_album.png)
