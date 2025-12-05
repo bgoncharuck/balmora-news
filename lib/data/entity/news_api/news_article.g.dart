@@ -22,10 +22,10 @@ Map<String, dynamic> _$NewsArticleToJson(NewsArticle instance) =>
       'source': instance.source.toJson(),
       'author': instance.author,
       'title': instance.title,
-      'description': instance.description,
-      'url': instance.url,
       'urlToImage': instance.urlToImage,
       'publishedAt': instance.publishedAt,
+      'url': instance.url,
+      'description': instance.description,
       'content': instance.content,
     };
 

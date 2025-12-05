@@ -3,7 +3,6 @@ import 'package:balmoranews/core/init/init_widgets_binding.dart';
 import 'package:balmoranews/logic/controller/screen/welcome/welcome_screen_controller.dart';
 import 'package:balmoranews/ui/common/export.dart';
 import 'package:balmoranews/ui/mobile/portrait/mobile_portrait_action_page.dart';
-import 'package:flutter/cupertino.dart';
 
 class WelcomeMobilePortraitScreen extends StatefulWidget {
   const WelcomeMobilePortraitScreen({super.key});

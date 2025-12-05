@@ -40,9 +40,13 @@ class MobileAlbumActionPage extends StatelessWidget {
         ),
         Position(
           inset: adaptiveLTRB(32, 0, 32, 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: actions,
+          child: SingleChildScrollView(
+            clipBehavior: Clip.none,
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: actions,
+            ),
           ),
         ),
       ],

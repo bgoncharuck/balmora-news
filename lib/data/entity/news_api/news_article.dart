@@ -23,10 +23,16 @@ class NewsArticle {
   final NewsSource source;
   final String? author;
   final String title;
-  final String? description;
-  final String url;
   final String? urlToImage;
   final String? publishedAt;
+
+  /// url to open
+  final String url;
+
+  /// sometimes very short, sometimes empty
+  final String? description;
+
+  /// max length 199
   final String? content;
 }
 

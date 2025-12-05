@@ -22,9 +22,12 @@ import 'observers.dart';
 GoRouter declarativeRouter() => GoRouter(
   observers: [di.get<RouteHistoryObserver>()],
   redirect: (BuildContext context, GoRouterState state) {
-    if (localPref.acceptanceOfPrivacyPolicy && localPref.acceptanceOfTerms) {
-      return '/news';
+    if (state.uri.toString() == '/') {
+      if (localPref.acceptanceOfPrivacyPolicy && localPref.acceptanceOfTerms) {
+        return '/news';
+      }
     }
+
     return null;
   },
   routes: <GoRoute>[
@@ -70,11 +73,27 @@ GoRouter declarativeRouter() => GoRouter(
           },
           routes: [
             GoRoute(
-              path: 'details',
+              path: 'details/:sourceName/:title',
               builder: (BuildContext context, GoRouterState state) {
+                final newsCubit = context.read<NewsCubit>();
+                final sourceName = state.pathParameters['sourceName']!;
+                final title = state.pathParameters['title']!;
+                final allItems = [
+                  ...newsCubit.state.newItems,
+                  ...newsCubit.state.initialItems,
+                ];
+                final article = allItems
+                    .where((item) => item.article != null)
+                    .firstWhere(
+                      (item) =>
+                          item.article?.source.name == sourceName &&
+                          item.article?.title == title,
+                    )
+                    .article!;
+
                 return NewsDetailsScreenLocator(
                   controller: NewsDetailsScreenController(
-                    NewsDetailsScreenParams(),
+                    NewsDetailsScreenParams(article: article),
                   ),
                   child: const ResponsiveScreen(
                     mobilePortrait: NewsDetailsMobilePortraitScreen(),

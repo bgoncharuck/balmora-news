@@ -38,9 +38,13 @@ class MobilePortraitActionPage extends StatelessWidget {
         ),
         Position(
           inset: adaptiveLTRB(32, 0, 32, 110),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: actions,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            clipBehavior: Clip.none,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: actions,
+            ),
           ),
         ),
       ],
