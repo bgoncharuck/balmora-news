@@ -37,6 +37,14 @@ class NewsCubit extends HydratedCubit<NewsState> {
   Future<void> onEmptyInitialList() async {
     emit(state.firstLoad());
     try {
+      await initialFetch();
+    } catch (e) {
+      emit(state.firstLoadException(e.toString()));
+    }
+  }
+
+  Future<void> initialFetch({NewsState? newState}) async {
+    try {
       final articles = await newsApi.fetchArticles(
         request: NewsApiRequest(
           language: config.language,
@@ -48,16 +56,19 @@ class NewsCubit extends HydratedCubit<NewsState> {
         ),
       );
 
+      final initialItems = articles.map(NewsFeedItem.article).toList();
+      final initialTime = _lastFeedItemTime(initialItems);
       emit(
-        state.copyWith(
+        (newState ?? state).copyWith(
           errorType: NewsErrorType.none,
           hasReachedMax: false,
-          initialItems: articles.map(NewsFeedItem.article).toList(),
+          initialItems: initialItems,
+          initialTime: initialTime,
           page: 1,
         ),
       );
     } catch (e) {
-      emit(state.firstLoadException(e.toString()));
+      rethrow;
     }
   }
 
@@ -72,6 +83,8 @@ class NewsCubit extends HydratedCubit<NewsState> {
 
     final maxSize = config.pageSize * 3;
     try {
+      await _updateInitialTimeIfNeeded();
+
       final newItems = await newsApi.fetchArticles(
         request: NewsApiRequest(
           language: config.language,
@@ -85,25 +98,11 @@ class NewsCubit extends HydratedCubit<NewsState> {
       if (newItems.isEmpty) {
         return;
       } else if (newItems.length >= maxSize) {
-        final newState = NewsState.initial();
-        final newArticles = await newsApi.fetchArticles(
-          request: NewsApiRequest(
-            language: config.language,
-            pageSize: config.pageSize,
-            newsKeyWord: config.newsKeyWord,
-            fromTime: newState.oldestTime!,
-            toTime: newState.initialTime!,
-            page: 1,
-          ),
-        );
-        emit(
-          newState.copyWith(
-            errorType: NewsErrorType.none,
-            hasReachedMax: false,
-            initialItems: newArticles.map(NewsFeedItem.article).toList(),
-            page: 1,
-          ),
-        );
+        try {
+          await initialFetch(newState: NewsState.initial());
+        } catch (e) {
+          //
+        }
       } else {
         emit(
           state.copyWith(
@@ -164,4 +163,45 @@ class NewsCubit extends HydratedCubit<NewsState> {
 
   @override
   Map<String, dynamic> toJson(NewsState state) => state.toJson();
+
+  /// API time and json_annotation mismatch fix
+  static const _extraSecondsAfterNewestItem = 9;
+  static const _timeTolerance = Duration(seconds: 5);
+
+  DateTime? _lastFeedItemTime(List<NewsFeedItem> items) {
+    try {
+      final newestItemTime = DateTime.parse(
+        items.first.article!.publishedAt!,
+      ).toUtc();
+      final extraTimeAfterNewestItem = newestItemTime.add(
+        const Duration(seconds: _extraSecondsAfterNewestItem),
+      );
+      return extraTimeAfterNewestItem;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  bool _isSignificantlyDifferent(DateTime? a, DateTime? b) {
+    if (a == null && b == null) return false;
+    if (a == null || b == null) return true;
+    final diff = a.toUtc().difference(b.toUtc()).abs();
+    return diff > _timeTolerance;
+  }
+
+  Future<void> _updateInitialTimeIfNeeded() async {
+    try {
+      final newestItemTime = DateTime.parse(
+        state.initialItems.first.article!.publishedAt!,
+      ).toUtc();
+      final correctInitialTime = newestItemTime.add(
+        const Duration(seconds: _extraSecondsAfterNewestItem),
+      );
+      if (_isSignificantlyDifferent(correctInitialTime, state.initialTime)) {
+        emit(state.copyWith(initialTime: correctInitialTime));
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
 }
