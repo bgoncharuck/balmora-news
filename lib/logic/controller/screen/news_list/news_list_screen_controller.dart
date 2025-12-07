@@ -31,7 +31,14 @@ class NewsListScreenController extends ScreenController<NewsListScreenParams> {
     final sourceName = Uri.encodeComponent(article.source.name);
     final title = Uri.encodeComponent(article.title);
 
-    router.go('/news/details/$sourceName/$title');
+    router.go(
+      '/news/details/$sourceName/$title',
+
+      /// look, it's not a good practice
+      /// but when API does not have a consistent ID
+      /// how is URI even supposed to work?
+      extra: article,
+    );
   }
 
   Future<void> update() async {

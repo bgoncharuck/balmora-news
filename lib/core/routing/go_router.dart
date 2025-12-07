@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:balmoranews/core/di.dart';
 import 'package:balmoranews/core/interface/responsive_screen.dart';
+import 'package:balmoranews/data/entity/news_api/news_article.dart';
 import 'package:balmoranews/data/service/di.dart';
 import 'package:balmoranews/logic/controller/screen/news_details/news_details_screen_controller.dart';
 import 'package:balmoranews/logic/controller/screen/news_list/news_list_screen_controller.dart';
@@ -76,24 +79,33 @@ GoRouter declarativeRouter() => GoRouter(
               path: 'details/:sourceName/:title',
               builder: (BuildContext context, GoRouterState state) {
                 final newsCubit = context.read<NewsCubit>();
-                final sourceName = Uri.decodeComponent(
-                  state.pathParameters['sourceName']!,
-                );
-                final title = Uri.decodeComponent(
-                  state.pathParameters['title']!,
-                );
-                final allItems = [
-                  ...newsCubit.state.newItems,
-                  ...newsCubit.state.initialItems,
-                ];
-                final article = allItems
-                    .where((item) => item.article != null)
-                    .firstWhere(
-                      (item) =>
-                          item.article?.source.name == sourceName &&
-                          item.article?.title == title,
-                    )
-                    .article!;
+                late final NewsArticle article;
+                try {
+                  final sourceName = Uri.decodeComponent(
+                    state.pathParameters['sourceName']!,
+                  );
+                  final title = Uri.decodeComponent(
+                    state.pathParameters['title']!,
+                  );
+                  final allItems = [
+                    ...newsCubit.state.newItems,
+                    ...newsCubit.state.initialItems,
+                  ];
+                  article = allItems
+                      .where((item) => item.article != null)
+                      .firstWhere(
+                        (item) =>
+                            item.article?.source.name == sourceName &&
+                            item.article?.title == title,
+                      )
+                      .article!;
+                } catch (e, t) {
+                  /// look, it's not a good practice
+                  /// but when API does not have a consistent ID
+                  /// how is URI even supposed to work?
+                  unawaited(logger.exception(e, t));
+                  article = state.extra! as NewsArticle;
+                }
 
                 return NewsDetailsScreenLocator(
                   controller: NewsDetailsScreenController(
@@ -107,28 +119,6 @@ GoRouter declarativeRouter() => GoRouter(
                     desktop: DesktopNotSupported(),
                   ),
                 );
-              },
-              redirect: (BuildContext context, GoRouterState state) {
-                final newsCubit = context.read<NewsCubit>();
-                final sourceName = Uri.decodeComponent(
-                  state.pathParameters['sourceName']!,
-                );
-                final title = Uri.decodeComponent(
-                  state.pathParameters['title']!,
-                );
-                final allItems = [
-                  ...newsCubit.state.newItems,
-                  ...newsCubit.state.initialItems,
-                ];
-                final exists = allItems.any(
-                  (item) =>
-                      item.article?.source.name == sourceName &&
-                      item.article?.title == title,
-                );
-                if (!exists) {
-                  return '/news';
-                }
-                return null;
               },
             ),
           ],
