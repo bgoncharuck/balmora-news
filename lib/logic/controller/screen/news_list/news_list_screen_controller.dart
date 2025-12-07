@@ -28,8 +28,8 @@ class NewsListScreenController extends ScreenController<NewsListScreenParams> {
   }
 
   void goToArticleDetails(NewsArticle article) {
-    final sourceName = article.source.name;
-    final title = article.title;
+    final sourceName = Uri.encodeComponent(article.source.name);
+    final title = Uri.encodeComponent(article.title);
 
     router.go('/news/details/$sourceName/$title');
   }

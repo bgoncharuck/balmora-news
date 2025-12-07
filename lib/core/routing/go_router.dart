@@ -76,8 +76,12 @@ GoRouter declarativeRouter() => GoRouter(
               path: 'details/:sourceName/:title',
               builder: (BuildContext context, GoRouterState state) {
                 final newsCubit = context.read<NewsCubit>();
-                final sourceName = state.pathParameters['sourceName']!;
-                final title = state.pathParameters['title']!;
+                final sourceName = Uri.decodeComponent(
+                  state.pathParameters['sourceName']!,
+                );
+                final title = Uri.decodeComponent(
+                  state.pathParameters['title']!,
+                );
                 final allItems = [
                   ...newsCubit.state.newItems,
                   ...newsCubit.state.initialItems,
@@ -103,6 +107,28 @@ GoRouter declarativeRouter() => GoRouter(
                     desktop: DesktopNotSupported(),
                   ),
                 );
+              },
+              redirect: (BuildContext context, GoRouterState state) {
+                final newsCubit = context.read<NewsCubit>();
+                final sourceName = Uri.decodeComponent(
+                  state.pathParameters['sourceName']!,
+                );
+                final title = Uri.decodeComponent(
+                  state.pathParameters['title']!,
+                );
+                final allItems = [
+                  ...newsCubit.state.newItems,
+                  ...newsCubit.state.initialItems,
+                ];
+                final exists = allItems.any(
+                  (item) =>
+                      item.article?.source.name == sourceName &&
+                      item.article?.title == title,
+                );
+                if (!exists) {
+                  return '/news';
+                }
+                return null;
               },
             ),
           ],
